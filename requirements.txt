@@ -1,0 +1,9 @@
+peewee==3.14.0
+pandas==1.1.5
+git+https://github.com/benbenboben/reddit-data@main
+tensorflow
+scikit-learn
+seaborn
+jupyter
+numpy
+nltk
