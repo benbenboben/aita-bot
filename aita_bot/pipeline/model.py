@@ -14,7 +14,7 @@ from tensorflow.keras import layers
 class KerasTokenizerTransformer(BaseEstimator, TransformerMixin, Tokenizer):
 
     def __init__(self, **tokenizer_params):
-        super(Tokenizer).__init__(self, **tokenizer_params)
+        super().__init__(**tokenizer_params)
 
     def fit(self, X, y=None):
         self.fit_on_texts(X)
