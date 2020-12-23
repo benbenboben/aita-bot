@@ -13,8 +13,8 @@ from tensorflow.keras import layers
 
 class KerasTokenizerTransformer(BaseEstimator, TransformerMixin):
 
-    def __init__(self, **tokenizer_params):
-        self.tokenizer = Tokenizer(num_words=tokenizer_params.pop('num_words', None))
+    def __init__(self, num_words=50000):
+        self.tokenizer = Tokenizer(num_words=num_words)
         # super().__init__(num_words=tokenizer_params.pop('num_words', None))
 
     def fit(self, X, y=None):
