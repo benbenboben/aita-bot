@@ -11,17 +11,18 @@ from tensorflow.keras import layers
 
 
 
-class KerasTokenizerTransformer(BaseEstimator, TransformerMixin, Tokenizer):
+class KerasTokenizerTransformer(BaseEstimator, TransformerMixin):
 
     def __init__(self, **tokenizer_params):
-        super().__init__(num_words=tokenizer_params.pop('num_words', None))
+        self.tokenizer = Tokenizer(**tokenizer_params)
+        # super().__init__(num_words=tokenizer_params.pop('num_words', None))
 
     def fit(self, X, y=None):
-        self.fit_on_texts(X)
+        self.tokenizer.fit_on_texts(X)
         return self
 
     def transform(self, X, y=None):
-        X_transformed = self.texts_to_sequences(X)
+        X_transformed = self.tokenizer.texts_to_sequences(X)
         return X_transformed
 
 
