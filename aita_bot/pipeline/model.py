@@ -13,7 +13,6 @@ class KerasTokenizeAndPadTransformer(BaseEstimator, TransformerMixin):
         self.num_words = num_words
         self.maxlen = maxlen
         self.vocab_size = None
-
         self.tokenizer = Tokenizer(num_words=num_words)
 
     def fit(self, X, y=None):
@@ -27,7 +26,7 @@ class KerasTokenizeAndPadTransformer(BaseEstimator, TransformerMixin):
         return Xtransformed
 
 
-def read_glove(fname, vocab_size, tokenizer):
+def read_glove(fname, vocab_size, tokenizer, embedding_dim):
     embeddings_dictionary = dict()
 
     glove_file = open(fname, encoding="utf8")
@@ -39,7 +38,7 @@ def read_glove(fname, vocab_size, tokenizer):
 
     glove_file.close()
 
-    embedding_matrix = np.zeros((vocab_size, 100))
+    embedding_matrix = np.zeros((vocab_size, embedding_dim))
     for word, index in tokenizer.word_index.items():
         embedding_vector = embeddings_dictionary.get(word)
         if embedding_vector is not None:
@@ -60,12 +59,12 @@ def create_model(embedding_dim, embedding_matrix, vocab_size, maxlen):
     model.add(layers.Conv1D(256, 5, activation='relu'))
     model.add(layers.MaxPooling1D(5))
     model.add(layers.Dropout(0.5))
-    model.add(layers.Bidirectional(layers.LSTM(64, return_sequences=True)))
+    model.add(layers.Bidirectional(layers.LSTM(128, return_sequences=True)))
     model.add(layers.Dropout(0.5))
     model.add(layers.Conv1D(256, 5, activation='relu'))
     model.add(layers.MaxPooling1D(5))
     model.add(layers.Dropout(0.5))
-    model.add(layers.Bidirectional(layers.LSTM(64)))
+    model.add(layers.Bidirectional(layers.LSTM(128)))
     model.add(layers.Dropout(0.5))
     model.add(layers.Dense(1, activation='sigmoid'))
 
