@@ -1,13 +1,17 @@
 import numpy as np
 
-from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.base import BaseEstimator, TransformerMixin, ClassifierMixin
+from sklearn.pipeline import make_pipeline
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import Sequential
 from tensorflow.keras import layers
 
 
-class TokenizerTransformer(BaseEstimator, TransformerMixin, Tokenizer):
+
+
+
+class KerasTokenizerTransformer(BaseEstimator, TransformerMixin, Tokenizer):
 
     def __init__(self, **tokenizer_params):
         super(Tokenizer).__init__(self, **tokenizer_params)
@@ -21,9 +25,9 @@ class TokenizerTransformer(BaseEstimator, TransformerMixin, Tokenizer):
         return X_transformed
 
 
-class PadSequencesTransformer(BaseEstimator, TransformerMixin):
+class KerasPadSequencesTransformer(BaseEstimator, TransformerMixin):
 
-    def __init__(self, maxlen):
+    def __init__(self, maxlen=500):
         self.maxlen = maxlen
 
     def fit(self, X, y=None):
@@ -79,3 +83,5 @@ def create_model(embedding_dim, embedding_matrix, vocab_size, maxlen):
     model.compile(optimizer='adam',
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
+
+
