@@ -12,11 +12,13 @@ class KerasTokenizeAndPadTransformer(BaseEstimator, TransformerMixin):
     def __init__(self, num_words=50000, maxlen=500):
         self.num_words = num_words
         self.maxlen = maxlen
+        self.vocab_size = None
 
         self.tokenizer = Tokenizer(num_words=num_words)
 
     def fit(self, X, y=None):
         self.tokenizer.fit_on_texts(X)
+        self.vocab_size = len(self.tokenizer.word_index) + 1
         return self
 
     def transform(self, X, y=None):
@@ -71,4 +73,4 @@ def create_model(embedding_dim, embedding_matrix, vocab_size, maxlen):
                   loss='binary_crossentropy',
                   metrics=['accuracy'])
 
-
+    return model
