@@ -1,42 +1,28 @@
 import numpy as np
 
-from sklearn.base import BaseEstimator, TransformerMixin, ClassifierMixin
-from sklearn.pipeline import make_pipeline
+from sklearn.base import BaseEstimator, TransformerMixin
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import Sequential
 from tensorflow.keras import layers
 
 
+class KerasTokenizeAndPadTransformer(BaseEstimator, TransformerMixin):
 
+    def __init__(self, num_words=50000, maxlen=500):
+        self.num_words = num_words
+        self.maxlen = maxlen
 
-
-class KerasTokenizerTransformer(BaseEstimator, TransformerMixin):
-
-    def __init__(self, num_words=50000):
         self.tokenizer = Tokenizer(num_words=num_words)
-        # super().__init__(num_words=tokenizer_params.pop('num_words', None))
 
     def fit(self, X, y=None):
         self.tokenizer.fit_on_texts(X)
         return self
 
     def transform(self, X, y=None):
-        X_transformed = self.tokenizer.texts_to_sequences(X)
-        return X_transformed
-
-
-class KerasPadSequencesTransformer(BaseEstimator, TransformerMixin):
-
-    def __init__(self, maxlen=500):
-        self.maxlen = maxlen
-
-    def fit(self, X, y=None):
-        return self
-
-    def transform(self, X, y=None):
-        X_padded = pad_sequences(X, maxlen=self.maxlen, padding='post')
-        return X_padded
+        Xtransformed = self.tokenizer.texts_to_sequences(X)
+        Xtransformed = pad_sequences(Xtransformed, padding='post', maxlen=self.maxlen)
+        return Xtransformed
 
 
 def read_glove(fname, vocab_size, tokenizer):
