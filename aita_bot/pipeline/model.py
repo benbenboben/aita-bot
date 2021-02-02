@@ -9,11 +9,12 @@ from tensorflow.keras import layers
 
 class KerasTokenizeAndPadTransformer(BaseEstimator, TransformerMixin):
 
-    def __init__(self, num_words=50000, maxlen=500):
+    def __init__(self, num_words=50000, maxlen=500, document_count=0):
         self.num_words = num_words
         self.maxlen = maxlen
         self.vocab_size = None
-        self.tokenizer = Tokenizer(num_words=num_words)
+        self.document_count = document_count
+        self.tokenizer = Tokenizer(num_words=num_words, document_count=document_count)
 
     def fit(self, X, y=None):
         self.tokenizer.fit_on_texts(X)
